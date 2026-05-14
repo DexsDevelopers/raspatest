@@ -219,8 +219,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 20p
   </div>
   <div class="nav-links">
     <a href="/jogos/" class="nav-link active"><i class="fas fa-dice"></i> Cassino</a>
-    <a href="/" class="nav-link"><i class="fas fa-ticket-alt"></i> Raspadinhas</a>
-    <a href="/afiliados/" class="nav-link"><i class="fas fa-users"></i> Afiliados</a>
+    <a href="/cartelas" class="nav-link"><i class="fas fa-ticket-alt"></i> Raspadinhas</a>
+    <a href="/afiliados" class="nav-link"><i class="fas fa-users"></i> Afiliados</a>
   </div>
   <div class="nav-right">
     <?php if ($isLogged): ?>

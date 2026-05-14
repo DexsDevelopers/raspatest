@@ -11,11 +11,11 @@
     <span class="nav-logo-fallback" style="display:none"><span class="nav-logo-icon">🍀</span><span class="nav-logo-text">RaspaPix</span></span>
   </a>
 
-  <!-- Live ticker strip (hidden on mobile - shown via JS) -->
-  <div style="flex:1;overflow:hidden;max-width:400px;display:none" id="nav-ticker-wrap">
-    <div class="ticker-rail" style="height:32px;background:transparent;border:none">
-      <div class="ticker-track" id="ticker-track"></div>
-    </div>
+  <!-- Nav links -->
+  <div class="nav-links" id="nav-links">
+    <a href="/jogos/"    class="nav-link <?=strpos($_SERVER['REQUEST_URI'],'/jogos')!==false?'active':''?>"><i class="fas fa-dice" style="font-size:.8rem"></i> Cassino</a>
+    <a href="/cartelas" class="nav-link <?=strpos($_SERVER['REQUEST_URI'],'/cartelas')!==false?'active':''?>"><i class="fas fa-ticket-alt" style="font-size:.8rem"></i> Raspadinhas</a>
+    <a href="/afiliados" class="nav-link <?=strpos($_SERVER['REQUEST_URI'],'/afiliado')!==false?'active':''?>"><i class="fas fa-users" style="font-size:.8rem"></i> Afiliados</a>
   </div>
 
   <!-- Search -->
