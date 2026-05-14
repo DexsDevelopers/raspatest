@@ -1,10 +1,10 @@
-<?php
+﻿<?php
 @session_start();
 require_once '../conexao.php';
 
 if (!isset($_SESSION['usuario_id'])) {
-  $_SESSION['message'] = ['type' => 'warning', 'text' => 'Você precisa estar logado para acessar esta página!'];
-  header("Location: /login");
+  $_SESSION['message'] = ['type' => 'warning', 'text' => 'VocÃª precisa estar logado para acessar esta pÃ¡gina!'];
+  header("Location: /login.php");
   exit;
 }
 
@@ -14,7 +14,7 @@ $stmt->execute([$id]);
 $cartela = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$cartela) {
-    $_SESSION['message'] = ['type' => 'failure', 'text' => 'Cartela não encontrada.'];
+    $_SESSION['message'] = ['type' => 'failure', 'text' => 'Cartela nÃ£o encontrada.'];
     header("Location: /raspadinhas");
     exit;
 }
@@ -683,11 +683,11 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="instruction-item">
                             <i class="bi bi-3-circle instruction-icon"></i>
-                            <span>Descubra se você ganhou!</span>
+                            <span>Descubra se vocÃª ganhou!</span>
                         </div>
                         <div class="instruction-item">
                             <i class="bi bi-4-circle instruction-icon"></i>
-                            <span>Prêmios são creditados na hora</span>
+                            <span>PrÃªmios sÃ£o creditados na hora</span>
                         </div>
                     </div>
                 </div>
@@ -697,7 +697,7 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                 <div class="prizes-section">
                     <h3 class="prizes-title">
                         <i class="bi bi-gift-fill"></i>
-                        CONTEÚDO DESSA RASPADINHA:
+                        CONTEÃšDO DESSA RASPADINHA:
                     </h3>
                     
                     <div class="prizes-grid">
@@ -732,7 +732,7 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                     <div id="btn-overlay">
                         <i class="bi bi-play-circle overlay-icon"></i>
                         <div>Clique em "Comprar" para jogar</div>
-                        <div style="font-size: 0.9rem; opacity: 0.8;">Boa sorte! 🍀</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Boa sorte! ðŸ€</div>
                     </div>
                 </div>
 
@@ -915,10 +915,10 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                 resultMsg.innerHTML = `
                     <div style="color: #ef4444;">
                         <i class="bi bi-emoji-frown"></i>
-                        Não foi dessa vez. Tente novamente!
+                        NÃ£o foi dessa vez. Tente novamente!
                     </div>
                 `;
-                Notiflix.Notify.info('Não foi dessa vez. 😢');
+                Notiflix.Notify.info('NÃ£o foi dessa vez. ðŸ˜¢');
                 clearInterval(fadeInterval);
                 fadeInterval = 0;
                 await atualizarSaldoUsuario();
@@ -927,15 +927,15 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                 resultMsg.innerHTML = `
                     <div style="color: #22c55e;">
                         <i class="bi bi-trophy-fill"></i>
-                        🎉 Parabéns! Você ganhou R$ ${json.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}!
+                        ðŸŽ‰ ParabÃ©ns! VocÃª ganhou R$ ${json.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}!
                     </div>
                 `;
-                Notiflix.Notify.success(`🎉 Você ganhou R$ ${json.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}!`);
+                Notiflix.Notify.success(`ðŸŽ‰ VocÃª ganhou R$ ${json.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}!`);
                 clearInterval(fadeInterval);
                 fadeInterval = 0;
 
                 jsConfetti.addConfetti({
-                    emojis: ['🎉', '✨', '🎊', '🥳', '💰', '🍀'],
+                    emojis: ['ðŸŽ‰', 'âœ¨', 'ðŸŽŠ', 'ðŸ¥³', 'ðŸ’°', 'ðŸ€'],
                     emojiSize: 20,
                     confettiNumber: 300,
                     confettiRadius: 6,
@@ -1034,13 +1034,13 @@ $premios = $premios->fetchAll(PDO::FETCH_ASSOC);
                     console.warn('Erro ao buscar saldo:', json.error);
                 }
             } catch (e) {
-                console.error('Erro na requisição de saldo:', e);
+                console.error('Erro na requisiÃ§Ã£o de saldo:', e);
             }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('%c🎮 Raspadinha carregada!', 'color: #22c55e; font-size: 16px; font-weight: bold;');
+            console.log('%cðŸŽ® Raspadinha carregada!', 'color: #22c55e; font-size: 16px; font-weight: bold;');
             console.log(`Cartela: ${<?= json_encode($cartela['nome']); ?>}`);
         });
     </script>

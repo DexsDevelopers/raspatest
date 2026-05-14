@@ -1,211 +1,73 @@
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-content">
-            <div>
-                <div class="footer-brand">
-                    <?php if ($logoSite && file_exists($_SERVER['DOCUMENT_ROOT'] . $logoSite)): ?>
-                        <img src="<?= htmlspecialchars($logoSite) ?>" alt="<?= htmlspecialchars($nomeSite) ?>" class="footer-logo-image">
-                    <?php else: ?>
-                        <div class="footer-logo-icon">
-                            <?= strtoupper(substr($nomeSite, 0, 1)) ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <p class="footer-description">
-                    © 2025 <?php echo $nomeSite; ?>. Todos os direitos reservados.
-                </p>
-                <p class="footer-description">
-                    Raspadinhas e outros jogos de azar são regulamentados e cobertos pela nossa licença de jogos. Jogue com responsabilidade.
-                </p>
-            </div>
-                         
-            <div class="footer-section">
-                <h3>Regulamentos</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Jogo responsável</a></li>
-                    <li><a href="#">Política de Privacidade</a></li>
-                    <li><a href="#">Termos de Uso</a></li>
-                </ul>
-            </div>
-                         
-            <div class="footer-section">
-                <h3>Ajuda</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Perguntas Frequentes</a></li>
-                    <li><a href="#">Como Jogar</a></li>
-                    <li><a href="#">Suporte Técnico</a></li>
-                </ul>
-            </div>
-        </div>
+</div><!-- /page-wrap -->
+</main>
+</div><!-- /app-layout -->
+
+<footer style="background:rgba(0,0,0,.35);border-top:1px solid rgba(255,255,255,.05);padding:28px 22px;margin-top:40px">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px">
+    <div>
+      <img src="<?=$logoSite??''?>" alt="<?=htmlspecialchars($nomeSite??'RaspaPix')?>" style="height:34px;object-fit:contain;margin-bottom:10px;display:block"
+           onerror="this.outerHTML='<div style=font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:10px>🍀 '+<?=json_encode($nomeSite??'RaspaPix')?>+'</div>'">
+      <div style="font-size:.73rem;color:var(--muted-2);line-height:1.7">
+        © <?=date('Y')?> <?=htmlspecialchars($nomeSite??'RaspaPix')?>.<br>
+        Todos os direitos reservados.<br>
+        <span style="color:rgba(255,255,255,.3)">Jogue com responsabilidade.</span>
+      </div>
     </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:700;color:var(--text-2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">Jogos</div>
+      <?php foreach([
+        ['🎲 Cassino','/jogos/'],
+        ['🎫 Raspadinhas','/cartelas'],
+        ['✈️ Aviator','/jogos/aviator.php'],
+        ['💣 Mines','/jogos/mines.php'],
+        ['🚀 Crash','/jogos/crash.php'],
+        ['🐯 Fortune Tiger','/jogos/tiger.php'],
+      ] as [$l,$h]): ?>
+      <a href="<?=$h?>" style="display:block;font-size:.73rem;color:var(--muted-2);text-decoration:none;padding:4px 0;transition:color .2s" onmouseover="this.style.color='#00e676'" onmouseout="this.style.color=''">
+        <?=$l?>
+      </a>
+      <?php endforeach; ?>
+    </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:700;color:var(--text-2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">Conta</div>
+      <?php foreach([
+        ['Dashboard','/pages/dashboard.php'],
+        ['Depositar','/pages/deposit.php'],
+        ['Sacar','/pages/withdraw.php'],
+        ['Carteira','/pages/wallet.php'],
+        ['Histórico','/pages/history.php'],
+        ['Perfil','/perfil'],
+      ] as [$l,$h]): ?>
+      <a href="<?=$h?>" style="display:block;font-size:.73rem;color:var(--muted-2);text-decoration:none;padding:4px 0;transition:color .2s" onmouseover="this.style.color='#00e676'" onmouseout="this.style.color=''">
+        <?=$l?>
+      </a>
+      <?php endforeach; ?>
+    </div>
+    <div>
+      <div style="font-size:.72rem;font-weight:700;color:var(--text-2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">Plataforma</div>
+      <?php foreach([
+        ['👥 Afiliados','/afiliados'],
+        ['👑 VIP','/pages/vip.php'],
+        ['🏆 Ranking','/pages/ranking.php'],
+        ['💬 Suporte','/pages/support.php'],
+        ['📜 Política','/politica'],
+      ] as [$l,$h]): ?>
+      <a href="<?=$h?>" style="display:block;font-size:.73rem;color:var(--muted-2);text-decoration:none;padding:4px 0;transition:color .2s" onmouseover="this.style.color='#00e676'" onmouseout="this.style.color=''">
+        <?=$l?>
+      </a>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:18px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <div style="font-size:.68rem;color:var(--muted-2)">+18 · Jogo Responsável · Licença de Operação</div>
+    <div style="display:flex;gap:14px">
+      <a href="/jogos/"   style="font-size:.68rem;color:var(--muted-2);text-decoration:none">Cassino</a>
+      <a href="/cartelas" style="font-size:.68rem;color:var(--muted-2);text-decoration:none">Raspadinhas</a>
+      <a href="/afiliados" style="font-size:.68rem;color:var(--muted-2);text-decoration:none">Afiliados</a>
+    </div>
+  </div>
 </footer>
 
-<style>
-/* Footer Logo Styles */
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.footer-logo-image {
-    height: 40px;
-    width: auto;
-    max-width: 150px;
-    object-fit: contain;
-    transition: all 0.3s ease;
-}
-
-.footer-logo-image:hover {
-    transform: scale(1.02);
-}
-
-.footer-logo-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: #ffffff;
-    font-weight: 800;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-    transition: all 0.3s ease;
-}
-
-.footer-logo-icon:hover {
-    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
-    transform: translateY(-1px);
-}
-
-.footer-brand span {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
-}
-
-/* Footer Base Styles */
-.footer {
-    background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 4rem;
-}
-
-.footer-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 3rem 2rem 2rem;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 2rem;
-}
-
-.footer-section h3 {
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #22c55e;
-    padding-bottom: 0.5rem;
-    display: inline-block;
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 0.75rem;
-}
-
-.footer-links a {
-    color: #9ca3af;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.footer-links a:hover {
-    color: #22c55e;
-    padding-left: 0.5rem;
-}
-
-.footer-description {
-    color: #6b7280;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .footer-container {
-        padding: 2rem 1rem 1.5rem;
-    }
-    
-    .footer-brand {
-        gap: 0.5rem;
-    }
-    
-    .footer-logo-image {
-        height: 35px;
-    }
-    
-    .footer-logo-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 1.1rem;
-        border-radius: 8px;
-    }
-    
-    .footer-brand span {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-brand {
-        gap: 0.4rem;
-    }
-    
-    .footer-logo-image {
-        height: 32px;
-    }
-    
-    .footer-logo-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-        border-radius: 6px;
-    }
-    
-    .footer-brand span {
-        font-size: 1rem;
-    }
-    
-    .footer-section h3 {
-        font-size: 1rem;
-    }
-    
-    .footer-links a {
-        font-size: 0.9rem;
-    }
-    
-    .footer-description {
-        font-size: 0.85rem;
-    }
-}
-</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" crossorigin="anonymous"></script>
+<script src="/assets/js/main.js?v=3"></script>
+<script>if(typeof lucide!=='undefined')lucide.createIcons();</script>

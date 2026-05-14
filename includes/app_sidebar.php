@@ -17,7 +17,7 @@ function sba(string $f):string{ global $cp; return $cp===$f?'active':''; }
       <span class="sb-text">Cassino</span>
       <span class="sb-badge sb-badge-green">9</span>
     </a>
-    <a href="/" class="sb-item">
+    <a href="/cartelas" class="sb-item <?=strpos($_SERVER['REQUEST_URI'],'/cartelas')!==false||strpos($_SERVER['REQUEST_URI'],'/raspadinha')!==false?'active':''?>">
       <i data-lucide="ticket" class="sb-icon"></i>
       <span class="sb-text">Raspadinhas</span>
       <span class="sb-badge sb-badge-gold">HOT</span>

@@ -1,8 +1,12 @@
 <?php
 @session_start();
 include('./conexao.php');
+// Smart redirect: logged-in users go to dashboard, guests see the casino lobby
+if(isset($_SESSION['usuario_id'])){
+  header('Location: /pages/dashboard.php'); exit;
+}
+header('Location: /jogos/'); exit;
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>

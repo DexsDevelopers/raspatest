@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 @session_start();
 require_once '../conexao.php';
 header('Content-Type: application/json');
@@ -8,7 +8,7 @@ $raspadinhaId = (int)($_POST['raspadinha_id'] ?? 0);
 
 if (!$userId || !$raspadinhaId) {
     http_response_code(400);
-    exit(json_encode(['error' => 'Requisição inválida']));
+    exit(json_encode(['error' => 'RequisiÃ§Ã£o invÃ¡lida']));
 }
 
 $stmt = $pdo->prepare("SELECT valor FROM raspadinhas WHERE id = ?");
@@ -17,7 +17,7 @@ $raspadinha = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$raspadinha) {
     http_response_code(404);
-    exit(json_encode(['error' => 'Raspadinha não encontrada']));
+    exit(json_encode(['error' => 'Raspadinha nÃ£o encontrada']));
 }
 
 $stmt = $pdo->prepare("SELECT saldo, influencer FROM usuarios WHERE id = ?");
@@ -26,7 +26,7 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$usuario) {
     http_response_code(404);
-    exit(json_encode(['error' => 'Usuário não encontrado']));
+    exit(json_encode(['error' => 'UsuÃ¡rio nÃ£o encontrado']));
 }
 
 if ($usuario['saldo'] < $raspadinha['valor']) {
@@ -45,7 +45,7 @@ $premiosBrutos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (count($premiosBrutos) === 0) {
     http_response_code(500);
-    exit(json_encode(['error' => 'Nenhum prêmio configurado']));
+    exit(json_encode(['error' => 'Nenhum prÃªmio configurado']));
 }
 
 // Sistema de probabilidade MUITO melhorado para influencers
@@ -56,15 +56,15 @@ if ($isInfluencer) {
 /**
  * Aplica bonus GENEROSO de probabilidade para influencers
  * Sistema inteligente que aumenta drasticamente as chances de ganho
- * @param array $premios Array de prêmios
+ * @param array $premios Array de prÃªmios
  * @param float $custoRaspadinha Valor da raspadinha
- * @param int $userId ID do usuário para verificar histórico
- * @return array Prêmios com probabilidades MUITO melhoradas para influencers
+ * @param int $userId ID do usuÃ¡rio para verificar histÃ³rico
+ * @return array PrÃªmios com probabilidades MUITO melhoradas para influencers
  */
 function aplicarBonusInfluencer(array $premios, float $custoRaspadinha, int $userId): array {
     global $pdo;
     
-    // Verificar últimas 5 jogadas do influencer para análise mais ampla
+    // Verificar Ãºltimas 5 jogadas do influencer para anÃ¡lise mais ampla
     $stmt = $pdo->prepare("
         SELECT o.resultado 
         FROM orders o 
@@ -75,35 +75,35 @@ function aplicarBonusInfluencer(array $premios, float $custoRaspadinha, int $use
     $stmt->execute([$userId]);
     $ultimasJogadas = $stmt->fetchAll(PDO::FETCH_COLUMN);
     
-    // Analisar padrão de vitórias/derrotas
+    // Analisar padrÃ£o de vitÃ³rias/derrotas
     $derrotasConsecutivas = 0;
     $vitoriasUltimas5 = 0;
     
     foreach ($ultimasJogadas as $index => $resultado) {
         if ($resultado === 'gain') {
             $vitoriasUltimas5++;
-            if ($index === 0) break; // Se a última foi vitória, para a contagem de derrotas
+            if ($index === 0) break; // Se a Ãºltima foi vitÃ³ria, para a contagem de derrotas
         } else {
-            if ($index < 3) $derrotasConsecutivas++; // Só conta derrotas recentes
+            if ($index < 3) $derrotasConsecutivas++; // SÃ³ conta derrotas recentes
         }
     }
     
-    // Configurações GENEROSAS para influencers - só números alterados aqui
+    // ConfiguraÃ§Ãµes GENEROSAS para influencers - sÃ³ nÃºmeros alterados aqui
     $configuracao = [
         // Bonus base para influencers (sempre aplicado)
         'bonus_base_influencer' => 20,    // antes 8
         
-        // Bonus por categoria de prêmio
+        // Bonus por categoria de prÃªmio
         'bonus_premios_pequenos' => 40,   // antes 15
         'bonus_premios_medios'   => 35,   // antes 12
         'bonus_premios_grandes'  => 25,   // antes 8
         'bonus_premios_mega'     => 15,   // antes 4
         
-        // Bonus por situação
+        // Bonus por situaÃ§Ã£o
         'bonus_derrotas_consecutivas' => $derrotasConsecutivas * 10,  // antes 5
         'bonus_poucas_vitorias' => ($vitoriasUltimas5 <= 1) ? 20 : 0, // antes 10
         
-        // Redução na chance de não ganhar nada
+        // ReduÃ§Ã£o na chance de nÃ£o ganhar nada
         'reducao_sem_premio' => 50, // antes 25
         
         // Multiplicador geral de sorte
@@ -116,12 +116,12 @@ function aplicarBonusInfluencer(array $premios, float $custoRaspadinha, int $use
         $probabilidadeOriginal = $premio['probabilidade'];
         
         if ($valorPremio == 0) {
-            // REDUZ DRASTICAMENTE a chance de não ganhar nada
+            // REDUZ DRASTICAMENTE a chance de nÃ£o ganhar nada
             $novaProb = max(1, $probabilidadeOriginal - $configuracao['reducao_sem_premio']);
             $premio['probabilidade'] = $novaProb;
             
         } else {
-            // Determina categoria do prêmio e aplica bonus correspondente
+            // Determina categoria do prÃªmio e aplica bonus correspondente
             $bonusCategoria = 0;
             if ($multiplicador <= 3) {
                 $bonusCategoria = $configuracao['bonus_premios_pequenos'];
@@ -146,8 +146,8 @@ function aplicarBonusInfluencer(array $premios, float $custoRaspadinha, int $use
         }
     }
     
-    // Log para acompanhar os ajustes (remover em produção se necessário)
-    error_log("Influencer $userId - Derrotas consecutivas: $derrotasConsecutivas, Vitórias últimas 5: $vitoriasUltimas5");
+    // Log para acompanhar os ajustes (remover em produÃ§Ã£o se necessÃ¡rio)
+    error_log("Influencer $userId - Derrotas consecutivas: $derrotasConsecutivas, VitÃ³rias Ãºltimas 5: $vitoriasUltimas5");
     
     return $premios;
 }
@@ -172,13 +172,13 @@ function sortearPremio(array $premios): int {
 }
 
 /**
- * Função melhorada para controlar repetições no grid
- * Para influencers: permite mais facilmente combinações vencedoras
+ * FunÃ§Ã£o melhorada para controlar repetiÃ§Ãµes no grid
+ * Para influencers: permite mais facilmente combinaÃ§Ãµes vencedoras
  */
 function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
     $grid = [];
     $contagem = [];
-    $maxTentativasItem = $isInfluencer ? 100 : 50; // Influencers têm mais tentativas
+    $maxTentativasItem = $isInfluencer ? 100 : 50; // Influencers tÃªm mais tentativas
     
     // Buscar custo da raspadinha para calcular multiplicadores
     global $pdo, $raspadinhaId;
@@ -187,10 +187,10 @@ function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
     $raspadinha = $stmt->fetch(PDO::FETCH_ASSOC);
     $custoRaspadinha = (float)$raspadinha['valor'];
     
-    // Para influencers, só prêmios MUITO altos (acima de 20x) têm restrição
+    // Para influencers, sÃ³ prÃªmios MUITO altos (acima de 20x) tÃªm restriÃ§Ã£o
     $premiosRestritivos = [];
     if (!$isInfluencer) {
-        // Usuários normais: prêmios acima de 10x são restritivos
+        // UsuÃ¡rios normais: prÃªmios acima de 10x sÃ£o restritivos
         foreach ($premios as $premio) {
             $multiplicador = (float)$premio['valor'] / $custoRaspadinha;
             if ($multiplicador > 10) {
@@ -198,7 +198,7 @@ function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
             }
         }
     } else {
-        // Influencers: apenas prêmios EXTREMAMENTE altos são restritivos
+        // Influencers: apenas prÃªmios EXTREMAMENTE altos sÃ£o restritivos
         foreach ($premios as $premio) {
             $multiplicador = (float)$premio['valor'] / $custoRaspadinha;
             if ($multiplicador > 20) { // Muito mais permissivo para influencers
@@ -207,9 +207,9 @@ function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
         }
     }
     
-    // Configurações muito mais permissivas para influencers
+    // ConfiguraÃ§Ãµes muito mais permissivas para influencers
     $config = [
-        'max_grupos_tres' => $isInfluencer ? 3 : 1, // Influencers podem ter até 3 grupos de 3
+        'max_grupos_tres' => $isInfluencer ? 3 : 1, // Influencers podem ter atÃ© 3 grupos de 3
         'tentativas_extras' => $isInfluencer ? 50 : 0,
         'premios_restritivos' => $premiosRestritivos,
         'max_repeticoes_especiais' => $isInfluencer ? 3 : 2 // Influencers podem repetir mais
@@ -231,7 +231,7 @@ function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
                 }
             }
 
-            // Regras mais flexíveis para influencers
+            // Regras mais flexÃ­veis para influencers
             $isPremioRestritivo = in_array($itemId, $config['premios_restritivos']);
             $maxRepeticoesItem = $isPremioRestritivo ? $config['max_repeticoes_especiais'] : 3;
             
@@ -258,19 +258,19 @@ function gerarGridEquilibrado(array $premios, bool $isInfluencer): array {
  * Mais permissivo para influencers
  */
 function encontrarItemSeguro(array $premios, array $contagem, int $limiteRepeticoes, array $premiosRestritivos = []): int {
-    // Para influencers, tenta primeiro os prêmios de valor
+    // Para influencers, tenta primeiro os prÃªmios de valor
     foreach ($premios as $premio) {
         $id = (int)$premio['id'];
         $count = $contagem[$id] ?? 0;
         $isPremioRestritivo = in_array($id, $premiosRestritivos);
         
-        // Se é um prêmio bom e pode ser usado
+        // Se Ã© um prÃªmio bom e pode ser usado
         if (!$isPremioRestritivo && $count < $limiteRepeticoes && $premio['valor'] > 0) {
             return $id;
         }
     }
     
-    // Depois tenta qualquer prêmio que não seja restritivo
+    // Depois tenta qualquer prÃªmio que nÃ£o seja restritivo
     foreach ($premios as $premio) {
         $id = (int)$premio['id'];
         $count = $contagem[$id] ?? 0;
@@ -281,7 +281,7 @@ function encontrarItemSeguro(array $premios, array $contagem, int $limiteRepetic
         }
     }
     
-    // Se só restam restritivos, usa um com menos repetições
+    // Se sÃ³ restam restritivos, usa um com menos repetiÃ§Ãµes
     foreach ($premios as $premio) {
         $id = (int)$premio['id'];
         $count = $contagem[$id] ?? 0;
@@ -290,11 +290,11 @@ function encontrarItemSeguro(array $premios, array $contagem, int $limiteRepetic
         }
     }
     
-    // Última opção
+    // Ãšltima opÃ§Ã£o
     return (int)$premios[0]['id'];
 }
 
-// Gera o grid usando a função melhorada
+// Gera o grid usando a funÃ§Ã£o melhorada
 $grid = gerarGridEquilibrado($premiosBrutos, $isInfluencer);
 
 $stmt = $pdo->prepare("INSERT INTO orders (user_id, raspadinha_id, premios_json) VALUES (?, ?, ?)");

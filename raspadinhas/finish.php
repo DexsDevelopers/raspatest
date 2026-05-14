@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 @session_start();
 require_once '../conexao.php';
 header('Content-Type: application/json');
@@ -8,7 +8,7 @@ $orderId = (int)($_POST['order_id'] ?? 0);
 
 if (!$userId || !$orderId) {
     http_response_code(400);
-    exit(json_encode(['error' => 'Dados inválidos']));
+    exit(json_encode(['error' => 'Dados invÃ¡lidos']));
 }
 
 $stmt = $pdo->prepare("
@@ -24,7 +24,7 @@ $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$order || $order['status'] == 1) {
     http_response_code(400);
-    exit(json_encode(['error' => 'Ordem inválida']));
+    exit(json_encode(['error' => 'Ordem invÃ¡lida']));
 }
 
 $gridIds  = json_decode($order['premios_json'], true);
@@ -34,19 +34,19 @@ $premioId   = null;
 $valorPremio = 0.00;
 $resultado  = 'loss';
 
-// ✅ CORREÇÃO: Buscar o MAIOR prêmio ao invés do primeiro
+// âœ… CORREÃ‡ÃƒO: Buscar o MAIOR prÃªmio ao invÃ©s do primeiro
 $maiorPremio = 0.00;
 $melhorPremioId = null;
 
 foreach ($contagem as $id => $qtd) {
-    // ✅ CORREÇÃO: Aceita 3 OU MAIS imagens iguais (>= 3)
+    // âœ… CORREÃ‡ÃƒO: Aceita 3 OU MAIS imagens iguais (>= 3)
     if ($qtd >= 3) {
         $p = $pdo->prepare("SELECT valor FROM raspadinha_premios WHERE id = ?");
         $p->execute([$id]);
         $valorEncontrado = (float)$p->fetchColumn();
 
         if ($valorEncontrado > 0) {
-            // ✅ Verifica se este prêmio é maior que o anterior
+            // âœ… Verifica se este prÃªmio Ã© maior que o anterior
             if ($valorEncontrado > $maiorPremio) {
                 $maiorPremio = $valorEncontrado;
                 $melhorPremioId = $id;
@@ -55,7 +55,7 @@ foreach ($contagem as $id => $qtd) {
     }
 }
 
-// ✅ Define o resultado baseado no maior prêmio encontrado
+// âœ… Define o resultado baseado no maior prÃªmio encontrado
 if ($maiorPremio > 0) {
     $premioId = $melhorPremioId;
     $valorPremio = $maiorPremio;
@@ -68,10 +68,10 @@ if ($resultado === 'gain') {
     $pdo->prepare("UPDATE usuarios SET saldo = saldo + ? WHERE id = ?")
         ->execute([$valorTotalACreditar, $userId]);
     
-    // ✅ Revshare baseado no valor ganho
+    // âœ… Revshare baseado no valor ganho
     processarRevshareGanho($pdo, $userId, $valorPremio);
 } else {
-    // ✅ Revshare baseado no valor apostado
+    // âœ… Revshare baseado no valor apostado
     processarRevsharePerdas($pdo, $userId, (float)$order['custo_raspadinha']);
 }
 
@@ -91,7 +91,7 @@ echo json_encode([
 ]);
 
 /**
- * ✅ Quando o usuário GANHA, afiliado PERDE (baseado no valor ganho)
+ * âœ… Quando o usuÃ¡rio GANHA, afiliado PERDE (baseado no valor ganho)
  */
 function processarRevshareGanho($pdo, $userId, $valorGanho) {
     try {
@@ -116,7 +116,7 @@ function processarRevshareGanho($pdo, $userId, $valorGanho) {
         
         if ($percentualRevshare <= 0) return false;
 
-        // ✅ Dedução baseada no valor ganho
+        // âœ… DeduÃ§Ã£o baseada no valor ganho
         $valorDeduzir = ($valorGanho * $percentualRevshare) / 100;
         if ($valorDeduzir <= 0) return false;
 
@@ -134,7 +134,7 @@ function processarRevshareGanho($pdo, $userId, $valorGanho) {
 }
 
 /**
- * ✅ Quando o usuário PERDE, afiliado GANHA (baseado no valor apostado)
+ * âœ… Quando o usuÃ¡rio PERDE, afiliado GANHA (baseado no valor apostado)
  */
 function processarRevsharePerdas($pdo, $userId, $valorPerdido) {
     try {
@@ -175,7 +175,7 @@ function processarRevsharePerdas($pdo, $userId, $valorPerdido) {
 }
 
 /**
- * Histórico de transações de revshare
+ * HistÃ³rico de transaÃ§Ãµes de revshare
  */
 function registrarTransacaoRevshare($pdo, $afiliadoId, $usuarioId, $valorBase, $valorRevshare, $percentual, $tipo) {
     try {
@@ -187,12 +187,12 @@ function registrarTransacaoRevshare($pdo, $afiliadoId, $usuarioId, $valorBase, $
         ");
         $stmt->execute([$afiliadoId, $usuarioId, $valorBase, $valorRevshare, $percentual, $tipo]);
     } catch (PDOException $e) {
-        error_log("Erro ao registrar histórico revshare: " . $e->getMessage());
+        error_log("Erro ao registrar histÃ³rico revshare: " . $e->getMessage());
     }
 }
 
 /**
- * Criação da tabela de histórico se necessário
+ * CriaÃ§Ã£o da tabela de histÃ³rico se necessÃ¡rio
  */
 function criarTabelaHistoricoRevshare($pdo) {
     try {

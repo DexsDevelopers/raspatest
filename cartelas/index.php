@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 @session_start();
 require_once '../conexao.php';
 
@@ -461,7 +461,7 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
             <div class="page-header fade-in">
                 <h1 class="page-title">Escolha sua Raspadinha</h1>
                 <p class="page-subtitle">
-                    Centenas de prêmios esperando por você! Raspe e ganhe na hora com PIX instantâneo.
+                    Centenas de prÃªmios esperando por vocÃª! Raspe e ganhe na hora com PIX instantÃ¢neo.
                 </p>
                 
                 <div class="stats-bar">
@@ -471,11 +471,11 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">R$ <?= number_format(array_sum(array_column($cartelas, 'maior_premio')), 0, ',', '.'); ?></span>
-                        <span class="stat-label">Em Prêmios</span>
+                        <span class="stat-label">Em PrÃªmios</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-number">24/7</span>
-                        <span class="stat-label">Disponível</span>
+                        <span class="stat-label">DisponÃ­vel</span>
                     </div>
                 </div>
             </div>
@@ -488,7 +488,7 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <button class="filter-btn low" data-filter="low">
                     <i class="bi bi-coin"></i>
-                    <span>Até R$ 10</span>
+                    <span>AtÃ© R$ 10</span>
                 </button>
                 <button class="filter-btn medium" data-filter="medium">
                     <i class="bi bi-cash-stack"></i>
@@ -504,8 +504,8 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
             <?php if (empty($cartelas)): ?>
                 <div class="empty-state">
                     <i class="bi bi-grid-3x3-gap empty-icon"></i>
-                    <h3 style="color: white; margin-bottom: 1rem;">Nenhuma raspadinha disponível</h3>
-                    <p>Novas raspadinhas em breve! Fique atento às atualizações.</p>
+                    <h3 style="color: white; margin-bottom: 1rem;">Nenhuma raspadinha disponÃ­vel</h3>
+                    <p>Novas raspadinhas em breve! Fique atento Ã s atualizaÃ§Ãµes.</p>
                 </div>
             <?php else: ?>
                 <div class="cartelas-grid stagger-animation" id="cartelasGrid">
@@ -532,7 +532,7 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="cartela-features">
                                     <span class="feature-tag">
                                         <i class="bi bi-lightning-fill"></i>
-                                        PIX Instantâneo
+                                        PIX InstantÃ¢neo
                                     </span>
                                     <?php if($c['maior_premio'] >= 1000): ?>
                                         <span class="feature-tag">
@@ -552,7 +552,7 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
                                 <div class="prize-info">
                                     <div>
-                                        <div class="prize-label">Prêmio máximo</div>
+                                        <div class="prize-label">PrÃªmio mÃ¡ximo</div>
                                         <div class="prize-value">
                                             <i class="bi bi-trophy-fill"></i>
                                             R$ <?= number_format($c['maior_premio'], 0, ',', '.'); ?>
@@ -562,7 +562,7 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="prize-label">Via PIX</div>
                                         <div style="color: #22c55e; font-size: 0.9rem;">
                                             <i class="bi bi-check-circle-fill"></i>
-                                            Instantâneo
+                                            InstantÃ¢neo
                                         </div>
                                     </div>
                                 </div>
@@ -681,8 +681,8 @@ $cartelas = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                 });
             });
 
-            console.log('%c🎮 Raspadinhas carregadas!', 'color: #22c55e; font-size: 16px; font-weight: bold;');
-            console.log(`Total de ${cartelas.length} raspadinhas disponíveis`);
+            console.log('%cðŸŽ® Raspadinhas carregadas!', 'color: #22c55e; font-size: 16px; font-weight: bold;');
+            console.log(`Total de ${cartelas.length} raspadinhas disponÃ­veis`);
         });
 
         // Notiflix configuration
