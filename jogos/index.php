@@ -296,6 +296,23 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
       </div>
     </a>
 
+    <a href="/jogos/aviator.php" class="game-card" data-tags="hot exclusive">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#131420,#252636)">
+        <span class="emoji">✈️</span>
+        <div class="game-overlay"><button class="play-btn">▶ Jogar</button></div>
+        <div style="position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:5px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#ef4444;font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:999px"><span style="width:5px;height:5px;border-radius:50%;background:#ef4444;animation:pulse 1.5s infinite;display:block"></span>AO VIVO</div>
+      </div>
+      <div class="game-info">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+          <div class="game-name">Aviator</div>
+          <span class="game-badge badge-hot">HOT</span>
+        </div>
+        <div class="game-meta">
+          <div class="game-players"><i class="fas fa-users" style="font-size:.65rem"></i> <span class="player-count" data-base="5420">5.420</span> jogando</div>
+        </div>
+      </div>
+    </a>
+
     <a href="/jogos/crash.php" class="game-card" data-tags="hot exclusive">
       <div class="game-thumb thumb-crash">
         <span class="emoji">🚀</span>
