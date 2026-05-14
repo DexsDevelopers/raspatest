@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexao.php';
-$nomeSite = $nomeSite ?? 'Casino';
+$nomeSite = $nomeSite ?? 'RaspaPix';
 $isLogged = isset($_SESSION['usuario_id']);
 $saldo = 0;
 if ($isLogged) {
@@ -14,7 +14,7 @@ if ($isLogged) {
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Aviator — <?= htmlspecialchars($nomeSite) ?></title>
+<title>Aviator — 🍀 RaspaPix</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -24,15 +24,15 @@ a{color:inherit;text-decoration:none}
 
 /* NAV */
 .nav{height:52px;background:#131420;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;flex-shrink:0;z-index:10}
-.nav-logo{font-size:1.1rem;font-weight:900;color:#ff4655;letter-spacing:.08em}
-.nav-logo span{color:#fff}
+.nav-logo{font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:.02em;display:flex;align-items:center;gap:5px}
+.nav-logo .pix{color:#22c55e}
 .nav-sep{width:1px;height:24px;background:var(--border)}
 .nav-link{font-size:.8rem;color:var(--muted);font-weight:600;padding:4px 10px;border-radius:6px;transition:.15s}
 .nav-link:hover{color:#fff;background:rgba(255,255,255,.05)}
 .nav-link.active{color:#fff}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .nav-balance{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;color:var(--green)}
-.nav-deposit{background:var(--red);color:#fff;font-weight:700;border-radius:8px;padding:6px 14px;font-size:.8rem;border:none;cursor:pointer;font-family:inherit}
+.nav-deposit{background:#16a34a;color:#fff;font-weight:700;border-radius:8px;padding:6px 14px;font-size:.8rem;border:none;cursor:pointer;font-family:inherit}
 
 /* MAIN */
 .main{flex:1;display:grid;grid-template-columns:320px 1fr;overflow:hidden}
@@ -99,10 +99,10 @@ canvas{width:100%;height:100%;display:block;background:#0d0e17}
 </head>
 <body>
 <nav class="nav">
-  <div class="nav-logo">AVIA<span>TOR</span></div>
+  <a href="/jogos/" class="nav-logo" style="text-decoration:none">🍀 RASPA<span class="pix">PIX</span></a>
   <div class="nav-sep"></div>
   <a href="/jogos/" class="nav-link">← Lobby</a>
-  <a href="/jogos/aviator.php" class="nav-link active">Aviator</a>
+  <a href="/jogos/aviator.php" class="nav-link active" style="color:#22c55e">✈️ Aviator</a>
   <a href="/jogos/tiger.php?t=tiger" class="nav-link">Fortune Tiger</a>
   <div class="nav-right">
     <div class="nav-balance" id="navBalance">R$ <?= number_format($saldo,2,',','.') ?></div>

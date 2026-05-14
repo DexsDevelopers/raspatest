@@ -1,20 +1,20 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexao.php';
-$nomeSite = $nomeSite ?? 'Casino';
+$nomeSite = $nomeSite ?? 'RaspaPix';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Crash — <?= htmlspecialchars($nomeSite) ?></title>
+<title>Crash — 🍀 RaspaPix</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 body { background:#0d0d1a; color:#fff; font-family:'Inter',sans-serif; }
 .panel { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:16px; }
-.btn-primary { background:linear-gradient(135deg,#7c3aed,#4f46e5); color:#fff; font-weight:700; border-radius:10px; padding:12px 24px; width:100%; transition:all .2s; }
+.btn-primary { background:linear-gradient(135deg,#16a34a,#15803d); color:#fff; font-weight:700; border-radius:10px; padding:12px 24px; width:100%; transition:all .2s; }
 .btn-primary:hover { opacity:.9; transform:translateY(-1px); }
 .btn-cashout { background:linear-gradient(135deg,#10b981,#059669); }
 .btn-disabled { background:#374151; cursor:not-allowed; opacity:.5; }
@@ -28,14 +28,24 @@ body { background:#0d0d1a; color:#fff; font-family:'Inter',sans-serif; }
 .badge-crashed { background:#450a0a; color:#ef4444; }
 .history-pill { padding:4px 10px; border-radius:9999px; font-size:.75rem; font-weight:700; display:inline-block; }
 .input-field { background:#0d0d1a; border:1px solid #374151; color:#fff; border-radius:8px; padding:10px 14px; width:100%; }
-.input-field:focus { outline:none; border-color:#7c3aed; }
+.input-field:focus { outline:none; border-color:#16a34a; }
+.rp-nav{height:52px;background:#0a0a14;border-bottom:1px solid #1e1e35;display:flex;align-items:center;padding:0 20px;gap:14px}
+.rp-logo{font-size:1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:5px;text-decoration:none;font-family:Inter,sans-serif}
+.rp-logo .pix{color:#22c55e}
+.rp-divider{width:1px;height:20px;background:#1e1e35}
+.rp-back{font-size:.8rem;color:#6b7280;font-weight:600;text-decoration:none}
+.rp-back:hover{color:#fff}
 #crashChart { max-height:220px; }
 </style>
 </head>
 <body>
+<nav class="rp-nav">
+  <a href="/jogos/" class="rp-logo">🍀 RASPA<span class="pix">PIX</span></a>
+  <div class="rp-divider"></div>
+  <a href="/jogos/" class="rp-back">← Lobby</a>
+</nav>
 <div class="max-w-5xl mx-auto px-4 py-6">
   <div class="flex items-center gap-3 mb-6">
-    <a href="/jogos/" class="text-gray-400 hover:text-white"><i class="fas fa-arrow-left"></i></a>
     <h1 class="text-2xl font-bold">🚀 Crash</h1>
     <span id="statusBadge" class="status-badge badge-waiting">Aguardando</span>
   </div>

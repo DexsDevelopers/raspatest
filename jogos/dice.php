@@ -1,28 +1,38 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexao.php';
-$nomeSite = $nomeSite ?? 'Casino';
+$nomeSite = $nomeSite ?? 'RaspaPix';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dice — <?= htmlspecialchars($nomeSite) ?></title>
+<title>Dice — 🍀 RaspaPix</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 body { background:#0d0d1a; color:#fff; font-family:'Inter',sans-serif; }
 .panel { background:#1a1a2e; border:1px solid #2a2a4a; border-radius:16px; }
-.btn-primary { background:linear-gradient(135deg,#7c3aed,#4f46e5); color:#fff; font-weight:700; border-radius:10px; padding:12px; width:100%; transition:all .2s; }
+.btn-primary { background:linear-gradient(135deg,#16a34a,#15803d); color:#fff; font-weight:700; border-radius:10px; padding:12px; width:100%; transition:all .2s; }
 .btn-under { background:linear-gradient(135deg,#3b82f6,#1d4ed8); }
 .btn-over  { background:linear-gradient(135deg,#ef4444,#b91c1c); }
 .input-field { background:#0d0d1a; border:1px solid #374151; color:#fff; border-radius:8px; padding:10px 14px; width:100%; }
+.rp-nav{height:50px;background:#0a0a14;border-bottom:1px solid #1a1a2e;display:flex;align-items:center;padding:0 18px;gap:12px}
+.rp-logo{font-size:.95rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:4px;text-decoration:none}
+.rp-logo .pix{color:#22c55e}
+.rp-back{font-size:.8rem;color:#6b7280;font-weight:600;text-decoration:none;padding:4px 8px;border-radius:6px}
+.rp-back:hover{color:#fff;background:rgba(255,255,255,.06)}
 .result-num { font-size:5rem; font-weight:900; text-align:center; transition: color .3s; }
 input[type=range]::-webkit-slider-thumb { width:20px; height:20px; background:#7c3aed; }
 input[type=range] { accent-color: #7c3aed; }
 </style>
 </head>
 <body>
+<nav class="rp-nav">
+  <a href="/jogos/" class="rp-logo">🍀 RASPA<span class="pix">PIX</span></a>
+  <span style="color:#1e1e35">|</span>
+  <a href="/jogos/" class="rp-back">← Lobby</a>
+</nav>
 <div class="max-w-2xl mx-auto px-4 py-6">
   <div class="flex items-center gap-3 mb-6">
     <a href="/jogos/" class="text-gray-400 hover:text-white"><i class="fas fa-arrow-left"></i></a>

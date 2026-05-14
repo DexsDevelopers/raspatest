@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../conexao.php';
-$nomeSite   = $nomeSite ?? 'BetPlay';
+$nomeSite   = $nomeSite ?? 'RaspaPix';
 $isLogged   = isset($_SESSION['usuario_id']);
 $saldo      = 0;
 $nomeUser   = '';
@@ -18,7 +18,7 @@ if ($isLogged) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title><?= htmlspecialchars($nomeSite) ?> — Casino</title>
+<title>🍀 <?= htmlspecialchars($nomeSite) ?> — Cassino</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -26,8 +26,8 @@ if ($isLogged) {
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#080b14;--bg2:#0e1220;--card:#111827;--card2:#1a2235;
-  --border:#1e293b;--purple:#7c3aed;--purple2:#6d28d9;
-  --green:#10b981;--gold:#f59e0b;--red:#ef4444;
+  --border:#1e293b;--purple:#16a34a;--purple2:#15803d;
+  --green:#22c55e;--gold:#f59e0b;--red:#ef4444;
   --text:#e2e8f0;--muted:#64748b;
 }
 body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
@@ -35,12 +35,16 @@ a{text-decoration:none;color:inherit}
 
 /* NAVBAR */
 .nav{position:sticky;top:0;z-index:100;background:rgba(8,11,20,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.nav-logo{font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
-.nav-logo span{-webkit-text-fill-color:#10b981}
+.nav-logo{font-size:1.3rem;font-weight:900;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:6px;letter-spacing:.02em}
+.nav-logo .pix{color:#22c55e}
 .nav-links{display:flex;gap:4px}
 .nav-link{padding:8px 14px;border-radius:8px;font-size:.875rem;font-weight:600;color:var(--muted);transition:.2s}
 .nav-link:hover,.nav-link.active{background:var(--card2);color:#fff}
-.nav-link.active{color:#a78bfa}
+.nav-link.active{color:#22c55e}
+.announce{background:#16a34a;color:#fff;font-size:.82rem;font-weight:600;text-align:center;padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:12px;position:relative}
+.announce-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:4px 12px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.announce-btn:hover{background:rgba(255,255,255,.3)}
+.announce-close{position:absolute;right:14px;background:none;border:none;color:rgba(255,255,255,.7);font-size:1.1rem;cursor:pointer;line-height:1}
 .nav-right{display:flex;align-items:center;gap:10px}
 .balance-pill{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:.875rem;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px}
 .btn-deposit{background:linear-gradient(135deg,var(--green),#059669);color:#fff;font-weight:700;border-radius:10px;padding:8px 18px;font-size:.875rem;border:none;cursor:pointer;transition:.2s;white-space:nowrap}
@@ -54,7 +58,7 @@ a{text-decoration:none;color:inherit}
 .hero-text h1 .accent{background:linear-gradient(135deg,#a78bfa,#7c3aed,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero-text p{color:var(--muted);font-size:1.1rem;margin-bottom:28px;line-height:1.6}
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn-hero-primary{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-weight:700;border-radius:12px;padding:14px 28px;font-size:1rem;border:none;cursor:pointer;transition:.2s}
+.btn-hero-primary{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-weight:700;border-radius:12px;padding:14px 28px;font-size:1rem;border:none;cursor:pointer;transition:.2s}
 .btn-hero-primary:hover{opacity:.9;transform:translateY(-2px)}
 .btn-hero-sec{background:var(--card2);border:1px solid var(--border);color:#fff;font-weight:600;border-radius:12px;padding:14px 28px;font-size:1rem;cursor:pointer;transition:.2s}
 .hero-card{background:linear-gradient(135deg,#0e1220,#1a1f35);border:1px solid var(--border);border-radius:24px;padding:28px;position:relative;overflow:hidden}
@@ -137,20 +141,20 @@ a{text-decoration:none;color:inherit}
 .promo-card{border-radius:20px;padding:28px;position:relative;overflow:hidden;min-height:130px;display:flex;flex-direction:column;justify-content:flex-end}
 .promo-card h3{font-size:1.2rem;font-weight:800;margin-bottom:4px;position:relative}
 .promo-card p{font-size:.8rem;color:rgba(255,255,255,.7);position:relative}
-.promo-1{background:linear-gradient(135deg,#1e1040,#7c3aed)}
+.promo-1{background:linear-gradient(135deg,#052e16,#16a34a)}
 .promo-2{background:linear-gradient(135deg,#0a2818,#10b981)}
 .promo-badge{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border-radius:8px;padding:6px 12px;font-size:.75rem;font-weight:700}
 
 /* JACKPOT BAR */
-.jackpot-bar{background:linear-gradient(135deg,#1a0f30,#2d1f50);border:1px solid rgba(124,58,237,.3);border-radius:16px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap}
+.jackpot-bar{background:linear-gradient(135deg,#052e16,#14532d);border:1px solid rgba(22,163,74,.3);border-radius:16px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap}
 .jackpot-label{font-size:.8rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.jackpot-value{font-size:2rem;font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(245,158,11,.4)}
+.jackpot-value{font-size:2rem;font-weight:900;color:#22c55e;text-shadow:0 0 20px rgba(34,197,94,.4)}
 .jackpot-ticker{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:2px}
 
 /* FOOTER */
 footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24px 24px;margin-top:48px}
 .footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px}
-.footer-brand .logo{font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,#a78bfa,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.footer-brand .logo{font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .footer-brand p{color:var(--muted);font-size:.85rem;line-height:1.7;max-width:240px}
 .footer-col h4{font-size:.875rem;font-weight:700;margin-bottom:14px;color:#fff}
 .footer-col a{display:block;color:var(--muted);font-size:.85rem;margin-bottom:8px;transition:.2s}
@@ -176,9 +180,16 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
 </head>
 <body>
 
+<!-- ANNOUNCE BAR -->
+<div class="announce" id="announceBar">
+  <span>⬇️ Baixe nosso app e ganhe muitos pontos!</span>
+  <button class="announce-btn">Baixar</button>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove()">×</button>
+</div>
+
 <!-- NAVBAR -->
 <nav class="nav">
-  <a href="/jogos/" class="nav-logo"><?= htmlspecialchars($nomeSite) ?><span>.</span></a>
+  <a href="/jogos/" class="nav-logo">🍀 RASPA<span class="pix">PIX</span></a>
   <div class="nav-links">
     <a href="/jogos/" class="nav-link active"><i class="fas fa-gamepad" style="margin-right:6px"></i>Cassino</a>
     <a href="/"       class="nav-link"><i class="fas fa-ticket-alt" style="margin-right:6px"></i>Raspadinhas</a>
@@ -419,7 +430,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <div class="logo"><?= htmlspecialchars($nomeSite) ?><span style="-webkit-text-fill-color:#10b981">.</span></div>
+      <div class="logo">🍀 RASPA<span style="color:#22c55e">PIX</span></div>
       <p>Plataforma de jogos online com resultados provably fair e auditáveis. Jogue com responsabilidade.</p>
     </div>
     <div class="footer-col">
@@ -449,7 +460,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1280px;margin:0 auto">
-    <p>© 2025 <?= htmlspecialchars($nomeSite) ?>. Todos os direitos reservados. +18</p>
+    <p>© 2025 RaspaPix. Todos os direitos reservados. +18</p>
     <div style="display:flex;align-items:center;gap:12px">
       <span class="age-badge">🔞 +18</span>
       <span class="age-badge">🎲 Jogo Responsável</span>

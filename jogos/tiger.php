@@ -2,7 +2,7 @@
 // This file replaces jogos/tiger.php
 session_start();
 require_once __DIR__ . '/../conexao.php';
-$nomeSite = $nomeSite ?? 'Casino';
+$nomeSite = $nomeSite ?? 'RaspaPix';
 $theme    = preg_replace('/[^a-z]/', '', strtolower($_GET['t'] ?? 'tiger'));
 $themes   = [
     'tiger'  => ['name'=>'Fortune Tiger',  'main'=>'🐯','bg1'=>'#1a0000','bg2'=>'#3a0800','accent'=>'#e8a000','line'=>'#ff6600'],
@@ -22,7 +22,7 @@ if ($isLogged) {
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title><?= htmlspecialchars($t['name']) ?> — <?= htmlspecialchars($nomeSite) ?></title>
+<title><?= htmlspecialchars($t['name']) ?> — 🍀 RaspaPix</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,9 +32,12 @@ body{background:linear-gradient(160deg,<?= $t['bg1'] ?>,<?= $t['bg2'] ?>,#000);c
 .nav{height:54px;background:rgba(0,0,0,.7);border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;padding:0 20px;gap:14px;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
 .nav-back{font-size:.85rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px}
 .nav-back:hover{color:#fff}
+.nav-logo-rp{font-size:1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:5px;letter-spacing:.02em}
+.nav-logo-rp .pix{color:#22c55e}
+.nav-divider{width:1px;height:20px;background:rgba(255,255,255,.12)}
 .nav-title{font-size:1.1rem;font-weight:900;color:<?= $t['accent'] ?>;letter-spacing:.05em}
 .nav-balance{margin-left:auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700}
-.nav-deposit{background:<?= $t['accent'] ?>;color:#000;border:none;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:inherit}
+.nav-deposit{background:#16a34a;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:inherit}
 
 /* LAYOUT */
 .layout{max-width:1000px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start}
@@ -109,6 +112,8 @@ canvas#reelCanvas{display:block;width:100%;border-radius:10px}
 </head>
 <body>
 <nav class="nav">
+  <a href="/jogos/" class="nav-logo-rp">🍀 RASPA<span class="pix">PIX</span></a>
+  <div class="nav-divider"></div>
   <a href="/jogos/" class="nav-back">← Lobby</a>
   <div class="nav-title"><?= strtoupper($t['name']) ?></div>
   <div class="nav-balance" id="balDisplay">R$ <?= number_format($saldo,2,',','.') ?></div>
