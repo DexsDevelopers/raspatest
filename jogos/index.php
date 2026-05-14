@@ -229,10 +229,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 20p
         <span class="user-balance" id="navBal">R$ <?= number_format($saldo,2,',','.') ?></span>
         <span style="color:var(--muted);font-size:.8rem"><?= htmlspecialchars($nomeUser) ?></span>
       </div>
-      <button class="btn-deposit" onclick="location.href='/'">+ Depositar</button>
+      <button class="btn-deposit" onclick="location.href='/pages/deposit.php'">+ Depositar</button>
     <?php else: ?>
-      <button class="btn-enter" onclick="location.href='/'">Entrar</button>
-      <button class="btn-register" onclick="location.href='/'">Cadastrar</button>
+      <button class="btn-enter" onclick="location.href='/login.php'">Entrar</button>
+      <button class="btn-register" onclick="location.href='/login.php?tab=register'">Cadastrar</button>
     <?php endif; ?>
   </div>
 </nav>
