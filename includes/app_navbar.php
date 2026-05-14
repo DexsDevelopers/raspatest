@@ -7,8 +7,8 @@
   </button>
 
   <a href="/pages/dashboard.php" class="nav-logo" style="text-decoration:none">
-    <span class="nav-logo-icon">🍀</span>
-    <span class="nav-logo-text">RaspaPix</span><span class="nav-logo-dot">.</span>
+    <img src="<?=htmlspecialchars($logoSite)?>" alt="RaspaPix" class="nav-logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span class="nav-logo-fallback" style="display:none"><span class="nav-logo-icon">🍀</span><span class="nav-logo-text">RaspaPix</span></span>
   </a>
 
   <!-- Live ticker strip (hidden on mobile - shown via JS) -->

@@ -67,7 +67,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
 <!-- Page loader -->
 <div id="lp-loader">
-  <div class="loader-logo">🍀 RaspaPix<span class="dot">.</span></div>
+  <div class="loader-logo"><img src="<?=htmlspecialchars($logoSite??'')?>" alt="RaspaPix" style="height:44px;object-fit:contain"></div>
   <div class="loader-bar"><div class="loader-fill"></div></div>
   <div class="loader-text">Carregando...</div>
 </div>
@@ -77,10 +77,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
   <!-- Logo -->
   <div style="text-align:center;margin-bottom:28px" id="login-logo">
-    <div style="font-size:1.8rem;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.03em">
-      🍀 RaspaPix<span style="color:var(--red);text-shadow:0 0 16px var(--red)">.</span>
-    </div>
-    <div style="font-size:.84rem;color:var(--muted-2);margin-top:6px">Plataforma de apostas premium</div>
+    <img src="<?=htmlspecialchars($logoSite??'')?>" alt="RaspaPix" style="height:56px;object-fit:contain;filter:drop-shadow(0 0 14px rgba(0,200,80,.35))">
+    <div style="font-size:.84rem;color:var(--muted-2);margin-top:10px">Plataforma de apostas premium</div>
   </div>
 
   <!-- Card -->

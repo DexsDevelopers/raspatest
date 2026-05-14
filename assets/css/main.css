@@ -120,6 +120,9 @@ button{cursor:pointer;border:none;background:none}
   display:flex;align-items:center;gap:8px;flex-shrink:0;
   font-size:1.2rem;font-weight:900;letter-spacing:-.025em;
 }
+.nav-logo-img{height:36px;width:auto;object-fit:contain;display:block;filter:drop-shadow(0 0 6px rgba(0,200,80,.25));transition:filter .2s}
+.nav-logo:hover .nav-logo-img{filter:drop-shadow(0 0 10px rgba(0,200,80,.5))}
+.nav-logo-fallback{display:flex;align-items:center;gap:8px}
 .nav-logo-icon{font-size:1.3rem;filter:drop-shadow(0 0 8px rgba(255,23,68,.7))}
 .nav-logo-text{color:#fff}
 .nav-logo-dot{color:var(--red);text-shadow:0 0 12px var(--red)}

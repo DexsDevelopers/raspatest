@@ -211,7 +211,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 20p
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="/jogos/" class="logo">🍀 RaspaPix<span class="dot">.</span></a>
+  <a href="/jogos/" class="logo"><img src="<?=htmlspecialchars($logoSite??'')?>" alt="RaspaPix" style="height:38px;object-fit:contain;display:block"></a>
   <div class="nav-sep"></div>
   <div class="search-wrap">
     <i class="fas fa-search"></i>

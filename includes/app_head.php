@@ -36,7 +36,9 @@ if(!isset($bodyClass)) $bodyClass='';
 
 <!-- Page Loader -->
 <div id="lp-loader" aria-hidden="true">
-  <div class="loader-logo">🍀 RaspaPix<span class="dot">.</span></div>
+  <div class="loader-logo">
+    <img src="<?=htmlspecialchars($logoSite??'')?>" alt="RaspaPix" style="height:44px;object-fit:contain" onerror="this.outerHTML='<span style=font-weight:900;font-size:1.4rem>🍀 RaspaPix</span>'">
+  </div>
   <div class="loader-bar"><div class="loader-fill"></div></div>
   <div class="loader-text">Carregando plataforma...</div>
 </div>
