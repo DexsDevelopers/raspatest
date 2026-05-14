@@ -1,9 +1,13 @@
-<?php require_once __DIR__ . '/../inc/header.php'; ?>
+<?php
+session_start();
+require_once __DIR__ . '/../conexao.php';
+$nomeSite = $nomeSite ?? 'Casino';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Mines — <?= $nomeSite ?? 'Casino' ?></title>
+<title>Mines — <?= htmlspecialchars($nomeSite) ?></title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
