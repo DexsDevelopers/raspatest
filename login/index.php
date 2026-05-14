@@ -1,9 +1,8 @@
-<?php
+﻿<?php
 @session_start();
 
 if (isset($_SESSION['usuario_id'])) {
-    $_SESSION['message'] = ['type' => 'warning', 'text' => 'Você já está logado!'];
-    header("Location: /");
+    header("Location: /pages/dashboard.php");
     exit;
 }
 
@@ -21,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       
       if($usuario['banido'] == 1){
         $_SESSION['message'] = ['type' => 'failure', 'text' => 'Você está banido!'];
-        header("Location: /");
+        header("Location: /login");
         exit;
       }
       
         $_SESSION['usuario_id'] = $usuario['id'];
         $_SESSION['message'] = ['type' => 'success', 'text' => 'Login realizado com sucesso!'];
-        header("Location: /");
+        header("Location: /pages/dashboard.php");
         exit;
     } else {
         $_SESSION['message'] = ['type' => 'failure', 'text' => 'E-mail ou senha inválidos.'];
