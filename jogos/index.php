@@ -245,6 +245,57 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
   <!-- GAMES GRID -->
   <div class="games-grid" id="gamesGrid">
 
+    <a href="/jogos/tiger.php?t=tiger" class="game-card" data-tags="hot exclusive">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#3a0000,#7a0000)">
+        <span class="emoji">🐯</span>
+        <div class="game-overlay"><button class="play-btn">▶ Jogar</button></div>
+        <div style="position:absolute;top:10px;left:10px;font-size:.65rem;font-weight:700;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.5);color:#f59e0b;padding:3px 8px;border-radius:999px">PG STYLE</div>
+      </div>
+      <div class="game-info">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+          <div class="game-name">Fortune Tiger</div>
+          <span class="game-badge badge-hot">HOT</span>
+        </div>
+        <div class="game-meta">
+          <div class="game-players"><i class="fas fa-users" style="font-size:.65rem"></i> <span class="player-count" data-base="3241">3.241</span> jogando</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="/jogos/tiger.php?t=rabbit" class="game-card" data-tags="hot">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#2a0050,#7a0080)">
+        <span class="emoji">🐰</span>
+        <div class="game-overlay"><button class="play-btn">▶ Jogar</button></div>
+        <div style="position:absolute;top:10px;left:10px;font-size:.65rem;font-weight:700;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.5);color:#f59e0b;padding:3px 8px;border-radius:999px">PG STYLE</div>
+      </div>
+      <div class="game-info">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+          <div class="game-name">Fortune Rabbit</div>
+          <span class="game-badge badge-hot">HOT</span>
+        </div>
+        <div class="game-meta">
+          <div class="game-players"><i class="fas fa-users" style="font-size:.65rem"></i> <span class="player-count" data-base="2180">2.180</span> jogando</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="/jogos/tiger.php?t=dragon" class="game-card" data-tags="new exclusive">
+      <div class="game-thumb" style="background:linear-gradient(135deg,#001a4a,#002080)">
+        <span class="emoji">🐉</span>
+        <div class="game-overlay"><button class="play-btn">▶ Jogar</button></div>
+        <div style="position:absolute;top:10px;left:10px;font-size:.65rem;font-weight:700;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.5);color:#f59e0b;padding:3px 8px;border-radius:999px">PG STYLE</div>
+      </div>
+      <div class="game-info">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+          <div class="game-name">Fortune Dragon</div>
+          <span class="game-badge badge-new">NEW</span>
+        </div>
+        <div class="game-meta">
+          <div class="game-players"><i class="fas fa-users" style="font-size:.65rem"></i> <span class="player-count" data-base="1560">1.560</span> jogando</div>
+        </div>
+      </div>
+    </a>
+
     <a href="/jogos/crash.php" class="game-card" data-tags="hot exclusive">
       <div class="game-thumb thumb-crash">
         <span class="emoji">🚀</span>
@@ -255,7 +306,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
       </div>
       <div class="game-info">
         <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
-          <div class="game-name">Crash</div>
+          <div class="game-name">Aviator / Crash</div>
           <span class="game-badge badge-hot">HOT</span>
         </div>
         <div class="game-meta">
@@ -356,7 +407,10 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 24p
     </div>
     <div class="footer-col">
       <h4>Jogos</h4>
-      <a href="/jogos/crash.php">Crash</a>
+      <a href="/jogos/tiger.php?t=tiger">Fortune Tiger</a>
+      <a href="/jogos/tiger.php?t=rabbit">Fortune Rabbit</a>
+      <a href="/jogos/tiger.php?t=dragon">Fortune Dragon</a>
+      <a href="/jogos/crash.php">Aviator / Crash</a>
       <a href="/jogos/mines.php">Mines</a>
       <a href="/jogos/plinko.php">Plinko</a>
       <a href="/jogos/dice.php">Dice</a>
