@@ -1,51 +1,48 @@
-<?php
-/* ─── app_head.php ─── Shared <head> for all premium pages ─── */
-if (!isset($pageTitle)) $pageTitle = 'LunarPay';
-if (!isset($bodyClass)) $bodyClass = '';
+<?php /* ─── app_head.php ─── Shared HTML head ─── */
+if(!isset($pageTitle)) $pageTitle='LunarPay';
+if(!isset($bodyClass)) $bodyClass='';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title><?= htmlspecialchars($pageTitle) ?> — 🍀 RaspaPix</title>
+<title><?=htmlspecialchars($pageTitle)?> — 🍀 RaspaPix</title>
 <meta name="theme-color" content="#07070f">
-
-<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- AOS -->
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-
-<!-- Main CSS -->
 <link rel="stylesheet" href="/assets/css/main.css">
-
 <!-- GSAP -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-
-<!-- AOS JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- AOS + Lucide + PixiJS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
-
-<!-- Lucide Icons -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
-
-<!-- PixiJS (available for games) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js" defer></script>
-
-<?php if (isset($extraHead)) echo $extraHead; ?>
+<?php if(isset($extraHead)) echo $extraHead; ?>
 </head>
-<body class="<?= htmlspecialchars($bodyClass) ?>">
+<body class="<?=htmlspecialchars($bodyClass)?>">
 
-<!-- Particles Canvas -->
-<canvas id="particles-canvas"></canvas>
+<!-- Ambient bg -->
+<div class="ambient" aria-hidden="true">
+  <div class="ambient-orb ambient-orb-1"></div>
+  <div class="ambient-orb ambient-orb-2"></div>
+</div>
 
-<!-- Toast Container -->
-<div id="toast-container"></div>
+<!-- Particles -->
+<canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-<!-- Sidebar Overlay (mobile) -->
-<div class="overlay-sidebar" id="sidebar-overlay"></div>
+<!-- Page Loader -->
+<div id="lp-loader" aria-hidden="true">
+  <div class="loader-logo">🍀 RaspaPix<span class="dot">.</span></div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Carregando plataforma...</div>
+</div>
+
+<!-- Toasts -->
+<div id="toast-root"></div>
+
+<!-- Sidebar mobile overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>

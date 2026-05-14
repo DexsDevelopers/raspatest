@@ -1,70 +1,74 @@
-<?php /* ─── app_navbar.php ─── Premium Navbar ─── */ ?>
-<nav class="navbar">
+<?php /* ─── app_navbar.php ─── Ultra Premium Navbar ─── */ ?>
+<nav class="navbar" role="navigation">
 
-  <!-- Hamburger + Logo -->
-  <button id="sidebar-toggle" class="icon-btn" style="flex-shrink:0" aria-label="Menu">
-    <i data-lucide="menu" style="width:18px;height:18px"></i>
+  <!-- Toggle + Logo -->
+  <button id="sb-toggle" class="nav-icon-btn" aria-label="Toggle sidebar">
+    <i data-lucide="menu" style="width:17px;height:17px"></i>
   </button>
 
-  <a href="/pages/dashboard.php" class="navbar-logo">
-    <span class="icon">🍀</span>
-    <span class="name">RaspaPix</span><span class="dot">.</span>
+  <a href="/pages/dashboard.php" class="nav-logo" style="text-decoration:none">
+    <span class="nav-logo-icon">🍀</span>
+    <span class="nav-logo-text">RaspaPix</span><span class="nav-logo-dot">.</span>
   </a>
 
-  <!-- Ticker (desktop) -->
-  <div style="flex:1;overflow:hidden;display:none;" id="navbar-ticker-wrap" class="d-md-block">
-    <div style="white-space:nowrap;overflow:hidden;height:32px;display:flex;align-items:center">
-      <div id="live-ticker" style="display:inline-flex;gap:0;animation:ticker-scroll 45s linear infinite;font-size:.72rem"></div>
+  <!-- Live ticker strip (hidden on mobile - shown via JS) -->
+  <div style="flex:1;overflow:hidden;max-width:400px;display:none" id="nav-ticker-wrap">
+    <div class="ticker-rail" style="height:32px;background:transparent;border:none">
+      <div class="ticker-track" id="ticker-track"></div>
     </div>
   </div>
 
   <!-- Search -->
-  <div class="navbar-search">
-    <i class="fas fa-search search-icon"></i>
-    <input type="text" placeholder="Buscar jogos..." id="global-search">
+  <div class="nav-search">
+    <i class="fas fa-search nav-search-icon"></i>
+    <input type="text" class="nav-search-input" placeholder="Buscar jogos..." id="global-search" autocomplete="off">
   </div>
 
-  <!-- Right side -->
-  <div class="navbar-right">
+  <!-- Right actions -->
+  <div class="nav-right">
 
-    <?php if ($isLogged ?? false): ?>
+    <?php if($isLogged ?? false): ?>
       <!-- Balance -->
-      <div class="navbar-balance">
-        <i data-lucide="wallet" style="width:15px;height:15px;color:var(--muted)"></i>
-        <span class="amount" data-live-balance>
-          R$ <?= number_format($saldo ?? 0, 2, ',', '.') ?>
+      <div class="nav-balance" title="Saldo disponível">
+        <i data-lucide="circle-dollar-sign" style="width:14px;height:14px;color:var(--muted)"></i>
+        <span class="nav-balance-amount" data-live-bal>
+          R$ <?=number_format($saldo??0,2,',','.')?>
         </span>
       </div>
 
-      <!-- Deposit -->
-      <a href="/pages/deposit.php" class="btn btn-primary btn-sm">
-        <i data-lucide="plus" style="width:14px;height:14px"></i> Depositar
+      <!-- Deposit CTA -->
+      <a href="/pages/deposit.php" class="nav-btn-deposit">
+        <i class="fas fa-plus" style="font-size:.72rem;margin-right:5px"></i>Depositar
       </a>
 
-      <!-- User Dropdown -->
+      <!-- Notifications -->
+      <button class="nav-icon-btn" data-tip="Notificações">
+        <i data-lucide="bell" style="width:16px;height:16px"></i>
+      </button>
+
+      <!-- User dropdown -->
       <div class="dropdown">
-        <div class="avatar-btn" data-dropdown-trigger
-             data-tip="<?= htmlspecialchars(explode(' ', $nomeUser ?? 'U')[0]) ?>">
-          <?= strtoupper(substr($nomeUser ?? 'U', 0, 2)) ?>
+        <div class="nav-avatar" data-dd-trigger style="cursor:pointer" title="Minha conta">
+          <?=strtoupper(substr($nomeUser??'U',0,2))?>
         </div>
         <div class="dropdown-menu">
-          <div class="dropdown-item" style="flex-direction:column;align-items:flex-start;gap:2px;pointer-events:none;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:4px">
-            <span style="font-weight:700;color:#fff"><?= htmlspecialchars($nomeUser ?? '') ?></span>
-            <span style="font-size:.72rem;color:var(--muted)">Nível VIP <?= $vipLevel ?? 1 ?></span>
+          <div class="dd-header">
+            <div style="font-weight:800;font-size:.88rem;color:#fff"><?=htmlspecialchars(explode(' ',$nomeUser??'')[0]??'')?></div>
+            <div style="font-size:.72rem;color:var(--muted-2);margin-top:1px">VIP Nível <?=$vipLevel??1?> · Ativo</div>
           </div>
-          <a href="/pages/dashboard.php" class="dropdown-item"><i data-lucide="layout-dashboard" style="width:15px;height:15px"></i> Dashboard</a>
-          <a href="/pages/wallet.php"    class="dropdown-item"><i data-lucide="wallet"            style="width:15px;height:15px"></i> Carteira</a>
-          <a href="/pages/history.php"   class="dropdown-item"><i data-lucide="history"           style="width:15px;height:15px"></i> Histórico</a>
-          <a href="/pages/affiliates.php"class="dropdown-item"><i data-lucide="users"             style="width:15px;height:15px"></i> Afiliados</a>
-          <a href="/pages/vip.php"       class="dropdown-item"><i data-lucide="crown"             style="width:15px;height:15px"></i> VIP</a>
-          <div class="dropdown-divider"></div>
-          <a href="/logout.php"          class="dropdown-item danger"><i data-lucide="log-out"    style="width:15px;height:15px"></i> Sair</a>
+          <a href="/pages/dashboard.php"  class="dd-item"><i data-lucide="layout-dashboard" style="width:15px;height:15px"></i> Dashboard</a>
+          <a href="/pages/wallet.php"     class="dd-item"><i data-lucide="wallet"            style="width:15px;height:15px"></i> Carteira</a>
+          <a href="/pages/history.php"    class="dd-item"><i data-lucide="clock"             style="width:15px;height:15px"></i> Histórico</a>
+          <a href="/pages/vip.php"        class="dd-item"><i data-lucide="crown"             style="width:15px;height:15px"></i> VIP</a>
+          <a href="/pages/affiliates.php" class="dd-item"><i data-lucide="users"             style="width:15px;height:15px"></i> Afiliados</a>
+          <div class="dd-divider"></div>
+          <a href="/logout.php" class="dd-item danger"><i data-lucide="log-out" style="width:15px;height:15px"></i> Sair da conta</a>
         </div>
       </div>
 
     <?php else: ?>
-      <a href="/login.php"    class="btn btn-ghost btn-sm">Entrar</a>
-      <a href="/register.php" class="btn btn-primary btn-sm">Cadastrar</a>
+      <a href="/login.php" class="nav-btn-ghost">Entrar</a>
+      <a href="/login.php?tab=register" class="nav-btn-deposit" style="text-decoration:none">Cadastrar grátis</a>
     <?php endif; ?>
 
   </div>
