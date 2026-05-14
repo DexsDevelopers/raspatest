@@ -1,88 +1,130 @@
 <?php
 session_start();
-require_once __DIR__ . '/../conexao.php';
-if (!isset($_SESSION['usuario_id'])) { header('Location: /login.php'); exit; }
-$isLogged = true; $uid = $_SESSION['usuario_id'];
-$st = $pdo->prepare("SELECT nome, saldo FROM usuarios WHERE id=? LIMIT 1");
-$st->execute([$uid]); $user = $st->fetch(PDO::FETCH_ASSOC);
-$saldo = $user['saldo'] ?? 0; $nomeUser = $user['nome'] ?? '';
-$pageTitle = 'Carteira';
-include __DIR__ . '/../includes/app_head.php';
-include __DIR__ . '/../includes/app_navbar.php';
-include __DIR__ . '/../includes/app_sidebar.php';
+require_once __DIR__.'/../conexao.php';
+if(!isset($_SESSION['usuario_id'])){header('Location: /login.php');exit;}
+$isLogged=true; $uid=$_SESSION['usuario_id'];
+$st=$pdo->prepare("SELECT nome,saldo FROM usuarios WHERE id=? LIMIT 1");
+$st->execute([$uid]); $u=$st->fetch(PDO::FETCH_ASSOC);
+$saldo=$u['saldo']??0; $nomeUser=$u['nome']??''; $vipLevel=1;
+
+// Stats
+$totalDep = $pdo->prepare("SELECT COALESCE(SUM(valor),0) FROM depositos WHERE user_id=? AND status='PAID'");
+$totalDep->execute([$uid]); $totalDeposited = $totalDep->fetchColumn();
+
+$totalSaq = $pdo->prepare("SELECT COALESCE(SUM(valor),0) FROM saques WHERE user_id=? AND status='PAID'");
+$totalSaq->execute([$uid]); $totalWithdrawn = $totalSaq->fetchColumn();
+
+$pendSaq = $pdo->prepare("SELECT COALESCE(SUM(valor),0) FROM saques WHERE user_id=? AND status='PENDING'");
+$pendSaq->execute([$uid]); $pendingWithdraw = $pendSaq->fetchColumn();
+
+// Transactions
+$deps = $pdo->prepare("SELECT valor,status,created_at,updated_at FROM depositos WHERE user_id=? ORDER BY created_at DESC LIMIT 30");
+$deps->execute([$uid]); $deposits = $deps->fetchAll(PDO::FETCH_ASSOC);
+
+$saqs = $pdo->prepare("SELECT valor,status,created_at,updated_at FROM saques WHERE user_id=? ORDER BY created_at DESC LIMIT 30");
+$saqs->execute([$uid]); $withdrawals = $saqs->fetchAll(PDO::FETCH_ASSOC);
+
+$pageTitle='Carteira';
+include __DIR__.'/../includes/app_head.php';
+include __DIR__.'/../includes/app_navbar.php';
+include __DIR__.'/../includes/app_sidebar.php';
 ?>
-<div class="app"><div class="page-content" id="page-content">
+<div class="page-wrap" id="page-wrap">
 
-  <div class="page-title" data-aos="fade-right">
-    <i data-lucide="wallet" class="pt-icon"></i> Carteira
+  <div class="page-title"><div class="page-title-icon"><i data-lucide="wallet" style="width:17px;height:17px"></i></div> Minha Carteira</div>
+
+  <!-- Balance cards -->
+  <div class="bal-grid" data-aos="fade-up">
+    <div class="bal-card card-shine" style="--deco-color:rgba(0,230,118,.08)">
+      <div class="bal-card-label"><i data-lucide="wallet" style="width:12px;height:12px"></i> Saldo Disponível</div>
+      <div class="bal-card-value" data-live-bal>R$ <?=number_format($saldo,2,',','.')?></div>
+      <div style="display:flex;gap:7px;margin-top:12px">
+        <a href="/pages/deposit.php"  class="btn btn-green btn-sm" style="flex:1;justify-content:center;text-decoration:none">+ Depositar</a>
+        <a href="/pages/withdraw.php" class="btn btn-neon  btn-sm" style="flex:1;justify-content:center;text-decoration:none">Sacar</a>
+      </div>
+      <div class="bal-card-icon bc-green"><i data-lucide="wallet" style="width:17px;height:17px"></i></div>
+    </div>
+    <div class="bal-card">
+      <div class="bal-card-label"><i data-lucide="arrow-down-circle" style="width:12px;height:12px"></i> Total Depositado</div>
+      <div class="bal-card-value" style="color:var(--green)">R$ <?=number_format($totalDeposited,2,',','.')?></div>
+      <div class="bal-card-sub muted"><?=count($deposits)?> depósito(s)</div>
+      <div class="bal-card-icon bc-green"><i data-lucide="arrow-down-circle" style="width:17px;height:17px"></i></div>
+    </div>
+    <div class="bal-card">
+      <div class="bal-card-label"><i data-lucide="arrow-up-circle" style="width:12px;height:12px"></i> Total Sacado</div>
+      <div class="bal-card-value">R$ <?=number_format($totalWithdrawn,2,',','.')?></div>
+      <div class="bal-card-sub muted"><?=count($withdrawals)?> saque(s)</div>
+      <div class="bal-card-icon bc-red"><i data-lucide="arrow-up-circle" style="width:17px;height:17px"></i></div>
+    </div>
+    <div class="bal-card">
+      <div class="bal-card-label"><i data-lucide="clock" style="width:12px;height:12px"></i> Saques Pendentes</div>
+      <div class="bal-card-value" style="color:var(--gold)">R$ <?=number_format($pendingWithdraw,2,',','.')?></div>
+      <div class="bal-card-sub muted">Em processamento</div>
+      <div class="bal-card-icon bc-gold"><i data-lucide="clock" style="width:17px;height:17px"></i></div>
+    </div>
   </div>
 
-  <!-- Balance Cards -->
-  <div class="balance-grid mb-3">
-    <div class="balance-card card-shine" data-aos="fade-up">
-      <div class="bc-label">Saldo Disponível</div>
-      <div class="bc-value">R$ <?= number_format($saldo,2,',','.') ?></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <a href="/pages/deposit.php"  class="btn btn-green btn-sm" style="flex:1;justify-content:center">+ Depositar</a>
-        <a href="/pages/withdraw.php" class="btn btn-neon  btn-sm" style="flex:1;justify-content:center">Sacar</a>
-      </div>
-      <div class="bc-icon bc-icon-green"><i data-lucide="wallet" style="width:20px;height:20px"></i></div>
+  <!-- Transactions table -->
+  <div class="card" data-aos="fade-up" style="margin-top:18px">
+    <div class="tabs mb-3">
+      <button class="tab active" data-tab="tab-deps">Depósitos</button>
+      <button class="tab" data-tab="tab-saqs">Saques</button>
     </div>
-    <div class="balance-card" data-aos="fade-up" data-aos-delay="80">
-      <div class="bc-label">Total Depositado</div>
-      <div class="bc-value">R$ 0,00</div>
-      <div class="bc-change up">Histórico completo</div>
-      <div class="bc-icon bc-icon-blue"><i data-lucide="arrow-down-circle" style="width:20px;height:20px"></i></div>
-    </div>
-    <div class="balance-card" data-aos="fade-up" data-aos-delay="160">
-      <div class="bc-label">Total Sacado</div>
-      <div class="bc-value">R$ 0,00</div>
-      <div class="bc-change down">Histórico completo</div>
-      <div class="bc-icon bc-icon-red"><i data-lucide="arrow-up-circle" style="width:20px;height:20px"></i></div>
-    </div>
-    <div class="balance-card" data-aos="fade-up" data-aos-delay="240">
-      <div class="bc-label">Bônus Disponível</div>
-      <div class="bc-value" style="color:var(--gold)">R$ 0,00</div>
-      <div class="bc-change up">Faça 1º depósito</div>
-      <div class="bc-icon bc-icon-gold"><i data-lucide="gift" style="width:20px;height:20px"></i></div>
-    </div>
-  </div>
 
-  <!-- Transactions -->
-  <div class="card" data-aos="fade-up">
-    <div class="section-title" style="justify-content:space-between">
-      <span style="display:flex;align-items:center;gap:8px"><i data-lucide="list" style="width:18px;height:18px;color:var(--red)"></i> Movimentações</span>
-      <div class="tabs" style="margin:0;border:none;padding:0">
-        <button class="tab-btn active" data-tab="t-all">Todas</button>
-        <button class="tab-btn" data-tab="t-dep">Depósitos</button>
-        <button class="tab-btn" data-tab="t-saq">Saques</button>
-      </div>
-    </div>
     <div data-tab-group>
-      <div class="tab-panel active" id="t-all">
-        <div class="table-wrap">
+      <!-- Deposits -->
+      <div class="tab-panel active" id="tab-deps">
+        <?php if(empty($deposits)): ?>
+        <div style="text-align:center;padding:40px;color:var(--muted-2)">Nenhum depósito ainda. <a href="/pages/deposit.php" style="color:var(--green)">Fazer primeiro depósito</a></div>
+        <?php else: ?>
+        <div class="tbl-wrap">
           <table>
-            <thead><tr><th>Tipo</th><th>Valor</th><th>Método</th><th>Status</th><th>Data</th></tr></thead>
+            <thead><tr><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
             <tbody>
-              <?php
-              $types = [['Depósito','R$ 100,00','PIX','approved'],['Aposta','R$ -25,00','Fortune Tiger','completed'],['Ganho','R$ +180,00','Fortune Tiger','completed'],['Saque','R$ -50,00','PIX','pending']];
-              foreach($types as [$tp,$v,$m,$s]): $isPos = str_contains($v,'+') || $tp==='Depósito'; ?>
-              <tr>
-                <td><span class="badge <?=$isPos?'badge-green':'badge-red'?>"><?=$tp?></span></td>
-                <td style="font-weight:700;color:<?=$isPos?'var(--green)':'var(--red)'?>"><?=$v?></td>
-                <td style="color:var(--muted)"><?=$m?></td>
-                <td><span class="badge <?=$s==='approved'||$s==='completed'?'badge-green':'badge-gold'?>"><?=$s==='approved'?'Aprovado':($s==='completed'?'Concluído':'Pendente')?></span></td>
-                <td style="color:var(--muted);font-size:.78rem">Hoje</td>
-              </tr>
-              <?php endforeach; ?>
+            <?php foreach($deposits as $d):
+              $st2=strtoupper($d['status']??'');
+              $cls=$st2==='PAID'?'badge-green':($st2==='PENDING'?'badge-yellow':'badge-red');
+              $lbl=$st2==='PAID'?'Pago':($st2==='PENDING'?'Pendente':'Cancelado');
+            ?>
+            <tr>
+              <td style="font-weight:700;color:var(--green)">R$ <?=number_format($d['valor'],2,',','.')?></td>
+              <td><span class="badge <?=$cls?>"><?=$lbl?></span></td>
+              <td style="color:var(--muted-2);font-size:.75rem"><?=date('d/m/Y H:i',strtotime($d['updated_at']??$d['created_at']??'now'))?></td>
+            </tr>
+            <?php endforeach; ?>
             </tbody>
           </table>
         </div>
+        <?php endif; ?>
       </div>
-      <div class="tab-panel" id="t-dep"><div class="table-wrap"><table><thead><tr><th>Valor</th><th>Status</th><th>Data</th></tr></thead><tbody><tr><td style="color:var(--green);font-weight:700">R$ 100,00</td><td><span class="badge badge-green">Aprovado</span></td><td style="color:var(--muted);font-size:.78rem">Hoje</td></tr></tbody></table></div></div>
-      <div class="tab-panel" id="t-saq"><div class="table-wrap"><table><thead><tr><th>Valor</th><th>Chave PIX</th><th>Status</th><th>Data</th></tr></thead><tbody><tr><td style="color:var(--red);font-weight:700">R$ 50,00</td><td style="color:var(--muted)">***@email.com</td><td><span class="badge badge-gold">Pendente</span></td><td style="color:var(--muted);font-size:.78rem">Hoje</td></tr></tbody></table></div></div>
-    </div>
+
+      <!-- Withdrawals -->
+      <div class="tab-panel" id="tab-saqs">
+        <?php if(empty($withdrawals)): ?>
+        <div style="text-align:center;padding:40px;color:var(--muted-2)">Nenhum saque solicitado ainda.</div>
+        <?php else: ?>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody>
+            <?php foreach($withdrawals as $s):
+              $st2=strtoupper($s['status']??'');
+              $cls=$st2==='PAID'?'badge-green':($st2==='PENDING'?'badge-yellow':'badge-red');
+              $lbl=$st2==='PAID'?'Pago':($st2==='PENDING'?'Pendente':'Recusado');
+            ?>
+            <tr>
+              <td style="font-weight:700">R$ <?=number_format($s['valor'],2,',','.')?></td>
+              <td><span class="badge <?=$cls?>"><?=$lbl?></span></td>
+              <td style="color:var(--muted-2);font-size:.75rem"><?=date('d/m/Y H:i',strtotime($s['updated_at']??$s['created_at']??'now'))?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+        <?php endif; ?>
+      </div>
+    </div><!-- /tab-group -->
   </div>
 
-</div></div>
-<?php include __DIR__ . '/../includes/app_footer.php'; ?>
+</div>
+<?php include __DIR__.'/../includes/app_footer.php'; ?>

@@ -1,106 +1,138 @@
 <?php
 session_start();
-require_once __DIR__ . '/../conexao.php';
-if (!isset($_SESSION['usuario_id'])) { header('Location: /login.php'); exit; }
-$isLogged = true; $uid = $_SESSION['usuario_id'];
-$st = $pdo->prepare("SELECT nome, saldo FROM usuarios WHERE id=? LIMIT 1");
-$st->execute([$uid]); $user = $st->fetch(PDO::FETCH_ASSOC);
-$saldo = $user['saldo'] ?? 0; $nomeUser = $user['nome'] ?? '';
-$pageTitle = 'Histórico';
-include __DIR__ . '/../includes/app_head.php';
-include __DIR__ . '/../includes/app_navbar.php';
-include __DIR__ . '/../includes/app_sidebar.php';
+require_once __DIR__.'/../conexao.php';
+if(!isset($_SESSION['usuario_id'])){header('Location: /login.php');exit;}
+$isLogged=true; $uid=$_SESSION['usuario_id'];
+$st=$pdo->prepare("SELECT nome,saldo FROM usuarios WHERE id=? LIMIT 1");
+$st->execute([$uid]); $u=$st->fetch(PDO::FETCH_ASSOC);
+$saldo=$u['saldo']??0; $nomeUser=$u['nome']??''; $vipLevel=1;
+
+// Apostas
+$bets = $pdo->prepare("SELECT jogo,valor_aposta,valor_ganho,multiplicador,resultado,created_at FROM apostas WHERE user_id=? ORDER BY created_at DESC LIMIT 50");
+try { $bets->execute([$uid]); $betsData=$bets->fetchAll(PDO::FETCH_ASSOC); } catch(Exception $e){ $betsData=[]; }
+
+// Depósitos
+$deps = $pdo->prepare("SELECT valor,status,updated_at FROM depositos WHERE user_id=? ORDER BY updated_at DESC LIMIT 30");
+$deps->execute([$uid]); $depsData=$deps->fetchAll(PDO::FETCH_ASSOC);
+
+// Saques
+$saqs = $pdo->prepare("SELECT valor,status,updated_at FROM saques WHERE user_id=? ORDER BY updated_at DESC LIMIT 30");
+$saqs->execute([$uid]); $saqsData=$saqs->fetchAll(PDO::FETCH_ASSOC);
+
+// Stats
+$totalBets   = count($betsData);
+$totalWon    = array_sum(array_column($betsData,'valor_ganho'));
+$totalWagered= array_sum(array_column($betsData,'valor_aposta'));
+$wins        = array_filter($betsData, fn($b)=>($b['resultado']??'loss')==='win');
+$winRate     = $totalBets>0 ? round(count($wins)/$totalBets*100,1) : 0;
+$biggestWin  = $totalBets>0 ? max(array_column($betsData,'valor_ganho')) : 0;
+
+$pageTitle='Histórico';
+include __DIR__.'/../includes/app_head.php';
+include __DIR__.'/../includes/app_navbar.php';
+include __DIR__.'/../includes/app_sidebar.php';
 ?>
-<div class="app"><div class="page-content" id="page-content">
+<div class="page-wrap" id="page-wrap">
 
-  <div class="page-title" data-aos="fade-right">
-    <i data-lucide="clock" class="pt-icon"></i> Histórico
+  <div class="page-title"><div class="page-title-icon"><i data-lucide="clock" style="width:17px;height:17px"></i></div> Histórico</div>
+
+  <!-- Stats row -->
+  <div class="stats-row" data-aos="fade-up">
+    <div class="stat-card"><div class="stat-lbl">🎲 Total Apostas</div><div class="stat-val"><?=number_format($totalBets,0,'.',',')?></div></div>
+    <div class="stat-card"><div class="stat-lbl">💰 Total Apostado</div><div class="stat-val">R$ <?=number_format($totalWagered,2,',','.')?></div></div>
+    <div class="stat-card"><div class="stat-lbl">🏆 Maior Ganho</div><div class="stat-val" style="color:var(--gold)">R$ <?=number_format($biggestWin,2,',','.')?></div></div>
+    <div class="stat-card"><div class="stat-lbl">📈 Taxa de Vitória</div><div class="stat-val" style="color:var(--green)"><?=$winRate?>%</div></div>
   </div>
 
-  <!-- Stats Row -->
-  <div class="stats-row mb-3">
-    <?php foreach([
-      ['Apostas','0','Rodadas totais','var(--text)'],
-      ['Maior Ganho','R$ 0,00','Maior pagamento','var(--gold)'],
-      ['Maior Sequência','0x','Multiplicador máx','var(--green)'],
-      ['Win Rate','0%','Taxa de vitória','var(--blue)'],
-    ] as [$l,$v,$s,$c]): ?>
-    <div class="stat-card" data-aos="fade-up">
-      <div class="s-label"><?=$l?></div>
-      <div class="s-value" style="color:<?=$c?>"><?=$v?></div>
-      <div class="s-sub"><?=$s?></div>
+  <!-- Tabs -->
+  <div class="card" data-aos="fade-up" style="margin-top:18px">
+    <div class="tabs mb-3">
+      <button class="tab active" data-tab="tab-bets">Apostas</button>
+      <button class="tab" data-tab="tab-hdeps">Depósitos</button>
+      <button class="tab" data-tab="tab-hsaqs">Saques</button>
     </div>
-    <?php endforeach; ?>
-  </div>
 
-  <!-- Filter bar -->
-  <div class="card mb-3" data-aos="fade-up" style="padding:14px 18px">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <div class="tabs" style="margin:0;border:none;padding:0">
-        <button class="tab-btn active" data-tab="h-bets">Apostas</button>
-        <button class="tab-btn" data-tab="h-deps">Depósitos</button>
-        <button class="tab-btn" data-tab="h-saqs">Saques</button>
-      </div>
-      <div style="margin-left:auto;display:flex;gap:8px">
-        <select class="form-input" style="width:auto;padding:7px 12px;font-size:.8rem">
-          <option>Todos os jogos</option>
-          <option>Fortune Tiger</option>
-          <option>Aviator</option>
-          <option>Crash</option>
-          <option>Mines</option>
-        </select>
-        <select class="form-input" style="width:auto;padding:7px 12px;font-size:.8rem">
-          <option>Últimos 7 dias</option>
-          <option>Últimos 30 dias</option>
-          <option>Este mês</option>
-          <option>Todos</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tables -->
-  <div class="card" data-aos="fade-up" data-tab-group>
-    <div class="tab-panel active" id="h-bets">
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Jogo</th><th>Aposta</th><th>Multiplicador</th><th>Resultado</th><th>Data</th></tr></thead>
-          <tbody id="bets-tbody">
-            <?php
-            $games = ['Fortune Tiger','Aviator','Fortune Rabbit','Crash','Mines','Plinko','Dice'];
-            for ($i=1;$i<=12;$i++):
-              $g    = $games[array_rand($games)];
-              $bet  = [5,10,15,20,25,50][rand(0,5)];
-              $mult = round(rand(0,250)/100,2);
-              $win  = round($bet*$mult,2);
-              $isWin= $mult >= 1.0;
+    <div data-tab-group>
+      <!-- Bets -->
+      <div class="tab-panel active" id="tab-bets">
+        <?php if(empty($betsData)): ?>
+        <div style="text-align:center;padding:40px;color:var(--muted-2)">Nenhuma aposta registrada ainda. <a href="/pages/games.php" style="color:var(--red)">Jogar agora</a></div>
+        <?php else: ?>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Jogo</th><th>Apostado</th><th>Mult.</th><th>Resultado</th><th>Data</th></tr></thead>
+            <tbody>
+            <?php foreach($betsData as $b):
+              $win=($b['resultado']??'')=='win';
+              $gain=$b['valor_ganho']??0;
+              $bet=$b['valor_aposta']??0;
+              $profit=$win?'+'.number_format($gain-$bet,2,',','.'):'-'.number_format($bet,2,',','.');
             ?>
             <tr>
-              <td style="color:var(--muted);font-size:.78rem">#<?=$i?></td>
-              <td><?=$g?></td>
+              <td><?=htmlspecialchars($b['jogo']??'—')?></td>
               <td>R$ <?=number_format($bet,2,',','.')?></td>
-              <td style="font-weight:700;color:<?=$isWin?'var(--green)':'var(--red)'?>"><?=$mult?>x</td>
-              <td><span class="badge <?=$isWin?'badge-green':'badge-red'?>"><?=$isWin?'+R$ '.number_format($win,2,',','.'):'-R$ '.number_format($bet,2,',','.')?></span></td>
-              <td style="color:var(--muted);font-size:.78rem">há <?=rand(1,72)?>h</td>
+              <td style="color:var(--gold);font-weight:700"><?=number_format($b['multiplicador']??0,2,',','.')?>x</td>
+              <td><span class="badge <?=$win?'badge-green':'badge-red'?>">R$ <?=$profit?></span></td>
+              <td style="color:var(--muted-2);font-size:.75rem"><?=date('d/m/Y H:i',strtotime($b['created_at']??'now'))?></td>
             </tr>
-            <?php endfor; ?>
-          </tbody>
-        </table>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+        <?php endif; ?>
       </div>
-    </div>
-    <div class="tab-panel" id="h-deps">
-      <div class="table-wrap"><table><thead><tr><th>Valor</th><th>Método</th><th>Status</th><th>Data</th></tr></thead>
-      <tbody>
-        <tr><td style="color:var(--green);font-weight:700">R$ 100,00</td><td>PIX</td><td><span class="badge badge-green">Aprovado</span></td><td style="color:var(--muted);font-size:.78rem">Hoje</td></tr>
-      </tbody></table></div>
-    </div>
-    <div class="tab-panel" id="h-saqs">
-      <div class="table-wrap"><table><thead><tr><th>Valor</th><th>Chave PIX</th><th>Status</th><th>Data</th></tr></thead>
-      <tbody>
-        <tr><td style="color:var(--red);font-weight:700">R$ 50,00</td><td style="color:var(--muted)">***email</td><td><span class="badge badge-gold">Processando</span></td><td style="color:var(--muted);font-size:.78rem">Hoje</td></tr>
-      </tbody></table></div>
+
+      <!-- Deposits history -->
+      <div class="tab-panel" id="tab-hdeps">
+        <?php if(empty($depsData)): ?>
+        <div style="text-align:center;padding:40px;color:var(--muted-2)">Nenhum depósito.</div>
+        <?php else: ?>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody>
+            <?php foreach($depsData as $d):
+              $s2=strtoupper($d['status']??'');
+              $cls=$s2==='PAID'?'badge-green':($s2==='PENDING'?'badge-yellow':'badge-red');
+            ?>
+            <tr>
+              <td style="color:var(--green);font-weight:700">R$ <?=number_format($d['valor'],2,',','.')?></td>
+              <td><span class="badge <?=$cls?>"><?=$s2?></span></td>
+              <td style="color:var(--muted-2);font-size:.75rem"><?=date('d/m/Y H:i',strtotime($d['updated_at']??'now'))?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+        <?php endif; ?>
+      </div>
+
+      <!-- Withdrawals history -->
+      <div class="tab-panel" id="tab-hsaqs">
+        <?php if(empty($saqsData)): ?>
+        <div style="text-align:center;padding:40px;color:var(--muted-2)">Nenhum saque.</div>
+        <?php else: ?>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+            <tbody>
+            <?php foreach($saqsData as $s):
+              $s2=strtoupper($s['status']??'');
+              $cls=$s2==='PAID'?'badge-green':($s2==='PENDING'?'badge-yellow':'badge-red');
+            ?>
+            <tr>
+              <td style="font-weight:700">R$ <?=number_format($s['valor'],2,',','.')?></td>
+              <td><span class="badge <?=$cls?>"><?=$s2?></span></td>
+              <td style="color:var(--muted-2);font-size:.75rem"><?=date('d/m/Y H:i',strtotime($s['updated_at']??'now'))?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+        <?php endif; ?>
+      </div>
     </div>
   </div>
 
-</div></div>
-<?php include __DIR__ . '/../includes/app_footer.php'; ?>
+</div>
+<?php include __DIR__.'/../includes/app_footer.php'; ?>
