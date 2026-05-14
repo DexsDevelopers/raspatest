@@ -1,0 +1,21 @@
+{
+    "name": "daanrox/raspadinha",
+    "description": "Desenvolvido por Gabriel Scott +5519995114493",
+    "autoload": {
+        "psr-4": {
+            "Daanrox\\Raspadinha\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "GabrielScott",
+            "email": "gabrielsnorre@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^3.9",
+        "symfony/var-dumper": "^7.3",
+        "doctrine/orm": "^3.5",
+        "guzzlehttp/guzzle": "^7.9"
+    }
+}
